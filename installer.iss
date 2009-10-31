@@ -1,8 +1,8 @@
 [Setup]
 AppID=WinIPBroadcast
 AppName=WinIPBroadcast
-AppVerName=WinIPBroadcast 1.0
-AppVersion=1.0
+AppVerName=WinIPBroadcast 1.1
+AppVersion=1.1
 AppPublisher=e-t172
 AppPublisherURL=http://winipbroadcast.e-t172.net/
 AppSupportURL=http://winipbroadcast.e-t172.net/
@@ -10,7 +10,7 @@ AppUpdatesURL=http://winipbroadcast.e-t172.net/
 AppContact=e-t172@akegroup.org
 
 OutputDir=.
-OutputBaseFilename=WinIPBroadcast-1.0
+OutputBaseFilename=WinIPBroadcast-1.1
 
 DefaultDirName={pf}\WinIPBroadcast
 AppendDefaultDirName=no
@@ -19,7 +19,7 @@ LicenseFile=LICENSE.txt
 
 
 [Files]
-Source:"WinIPBroadcast.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source:"WinIPBroadcast.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: StopService
 Source:"src\*"; DestDir:"{app}\src"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source:"LICENSE.txt"; DestDir:"{app}"; Flags: ignoreversion 
 Source:"README.txt"; DestDir:"{app}"; Flags: ignoreversion isreadme
@@ -36,3 +36,11 @@ Filename: "{sys}\net.exe"; Parameters: "start WinIPBroadcast"; StatusMsg: "Start
 [UninstallRun]
 Filename: "{sys}\net.exe"; Parameters: "stop WinIPBroadcast"; Flags: runhidden; RunOnceId: "StopService"
 Filename: "{app}\WinIPBroadcast.exe"; Parameters: "remove"; Flags: runhidden; RunOnceId: "RemoveService"
+
+[code]
+procedure StopService();
+var
+	ResultCode : Integer;
+begin
+	Exec(ExpandConstant('{sys}') + '\net.exe', 'stop WinIPBroadcast', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+end;

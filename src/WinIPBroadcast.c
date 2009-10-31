@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// WinIPBroadcast 1.0 by Etienne Dechamps (e-t172) <e-t172@akegroup.org>
+// WinIPBroadcast 1.1 by Etienne Dechamps (e-t172) <e-t172@akegroup.org>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -110,7 +110,7 @@ ULONG broadcastRouteAddress(SOCKET socket)
 
 	if (WSAIoctl(socket, SIO_ROUTING_INTERFACE_QUERY, &ourAddress, sizeof(ourAddress), &routeAddress, sizeof(routeAddress), &len, NULL, NULL) == SOCKET_ERROR)
 	{
-		if (WSAGetLastError() == WSAENETUNREACH || WSAGetLastError() == WSAENETDOWN)
+		if (WSAGetLastError() == WSAENETUNREACH || WSAGetLastError() == WSAEHOSTUNREACH || WSAGetLastError() == WSAENETDOWN)
 			return 0;
 	
 		socketError(TEXT("WSAIoctl(SIO_ROUTING_INTERFACE_QUERY)"), TRUE);
@@ -423,7 +423,7 @@ void serviceRemove(void)
 void usage(void)
 {
 	fwprintf(stderr, TEXT("usage: WinIPBroadcast < install | remove | run >\n"));
-	fwprintf(stderr, TEXT("WinIPBroadcast 1.0 by e-t172 <e-t172@akegroup.org>\n"));
+	fwprintf(stderr, TEXT("WinIPBroadcast 1.1 by e-t172 <e-t172@akegroup.org>\n"));
 	fwprintf(stderr, TEXT("http://winipbroadcast.e-t172.net/\n"));
 	quit();
 }

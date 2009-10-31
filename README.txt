@@ -1,5 +1,5 @@
 README
-WinIPBroadcast 1.0
+WinIPBroadcast 1.1
 By e-t172 <e-t172@akegroup.org>
 http://winipbroadcast.e-t172.net/
 

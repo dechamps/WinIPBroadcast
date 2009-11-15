@@ -222,6 +222,7 @@ void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
 	if (listenSocket == INVALID_SOCKET)
 	{
 		socketError(TEXT("WSASocket"), FALSE);
+		closesocket(socket);
 		return;
 	}
 	
@@ -229,6 +230,7 @@ void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
 	if (WSAIoctl(socket, FIONBIO, &block, sizeof(block), NULL, 0, &len, NULL, NULL) == SOCKET_ERROR)
 	{
 		socketError(TEXT("WSAIoctl(FIONBIO)"), FALSE);
+		closesocket(socket);
 		return;
 	}
 		
@@ -239,6 +241,7 @@ void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
 	if (bind(socket, (SOCKADDR *)&srcAddr, sizeof(srcAddr)) == SOCKET_ERROR)
 	{
 		socketError(TEXT("bind"), FALSE);
+		closesocket(socket);
 		return;
 	}
 	
@@ -246,6 +249,7 @@ void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
 	if (setsockopt(socket, SOL_SOCKET, SO_BROADCAST, (char *)&broadcastOpt, sizeof(broadcastOpt)) == SOCKET_ERROR)
 	{
 		socketError(TEXT("setsockopt(SO_BROADCAST)"), FALSE);
+		closesocket(socket);
 		return;
 	}
 	
@@ -260,10 +264,9 @@ void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
 	
 	if (WSASendTo(socket, &wsaBuffer, 1, &len, 0, (SOCKADDR *)&dstAddr, sizeof(dstAddr), NULL, NULL) != 0)
 		if (WSAGetLastError() != WSAEWOULDBLOCK)
-		{
 			socketError(TEXT("WSASend"), FALSE);
-			return;
-		}
+		
+	closesocket(socket);
 }
 
 void relayBroadcast(char *payload, DWORD payloadSize, ULONG srcAddress)

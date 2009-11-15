@@ -1,8 +1,8 @@
 [Setup]
 AppID=WinIPBroadcast
 AppName=WinIPBroadcast
-AppVerName=WinIPBroadcast 1.1
-AppVersion=1.1
+AppVerName=WinIPBroadcast 1.2
+AppVersion=1.2
 AppPublisher=e-t172
 AppPublisherURL=http://winipbroadcast.e-t172.net/
 AppSupportURL=http://winipbroadcast.e-t172.net/
@@ -10,7 +10,7 @@ AppUpdatesURL=http://winipbroadcast.e-t172.net/
 AppContact=e-t172@akegroup.org
 
 OutputDir=.
-OutputBaseFilename=WinIPBroadcast-1.1
+OutputBaseFilename=WinIPBroadcast-1.2
 
 DefaultDirName={pf}\WinIPBroadcast
 AppendDefaultDirName=no
@@ -27,7 +27,7 @@ Source:"README.txt"; DestDir:"{app}"; Flags: ignoreversion isreadme
 [Registry]
 Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; ValueType: string; ValueName: "InstallDir"; ValueData: "{app}"; Flags: deletevalue
-Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; ValueType: string; ValueName: "Version"; ValueData: "1.0"; Flags: deletevalue
+Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; ValueType: string; ValueName: "Version"; ValueData: "1.2"; Flags: deletevalue
 
 [Run]
 Filename: "{app}\WinIPBroadcast.exe"; Parameters: "install"; StatusMsg: "Installing service..."; Flags: runhidden

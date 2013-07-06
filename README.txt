@@ -1,7 +1,7 @@
 README
 WinIPBroadcast 1.2
-By e-t172 <e-t172@akegroup.org>
-http://winipbroadcast.e-t172.net/
+By Etienne Dechamps <etienne@edechamps.fr>
+https://github.com/dechamps/WinIPBroadcast
 
 BASIC USAGE
 
@@ -33,6 +33,5 @@ WinIPBroadcast has not (yet) been tested on platforms other than Windows 7. Theo
 
 AUTHOR
 
-Etienne Dechamps a.k.a e-t172
-e-t172@akegroup.org
-http://www.e-t172.net/
+Etienne Dechamps (a.k.a e-t172)
+etienne@edechamps.fr

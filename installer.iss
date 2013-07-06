@@ -3,11 +3,11 @@ AppID=WinIPBroadcast
 AppName=WinIPBroadcast
 AppVerName=WinIPBroadcast 1.2
 AppVersion=1.2
-AppPublisher=e-t172
-AppPublisherURL=http://winipbroadcast.e-t172.net/
-AppSupportURL=http://winipbroadcast.e-t172.net/
-AppUpdatesURL=http://winipbroadcast.e-t172.net/
-AppContact=e-t172@akegroup.org
+AppPublisher=Etienne Dechamps
+AppPublisherURL=https://github.com/dechamps/WinIPBroadcast
+AppSupportURL=https://github.com/dechamps/WinIPBroadcast
+AppUpdatesURL=https://github.com/dechamps/WinIPBroadcast
+AppContact=etienne@edechamps.fr
 
 OutputDir=.
 OutputBaseFilename=WinIPBroadcast-1.2

@@ -1,8 +1,8 @@
 [Setup]
 AppID=WinIPBroadcast
 AppName=WinIPBroadcast
-AppVerName=WinIPBroadcast 1.2
-AppVersion=1.2
+AppVerName=WinIPBroadcast 1.3
+AppVersion=1.3
 AppPublisher=Etienne Dechamps
 AppPublisherURL=https://github.com/dechamps/WinIPBroadcast
 AppSupportURL=https://github.com/dechamps/WinIPBroadcast
@@ -10,7 +10,7 @@ AppUpdatesURL=https://github.com/dechamps/WinIPBroadcast
 AppContact=etienne@edechamps.fr
 
 OutputDir=.
-OutputBaseFilename=WinIPBroadcast-1.2
+OutputBaseFilename=WinIPBroadcast-1.3
 
 DefaultDirName={pf}\WinIPBroadcast
 AppendDefaultDirName=no
@@ -29,7 +29,7 @@ Source:"README.md"; DestDir:"{app}"; DestName:"README.txt"; Flags: ignoreversion
 [Registry]
 Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; ValueType: string; ValueName: "InstallDir"; ValueData: "{app}"; Flags: deletevalue
-Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; ValueType: string; ValueName: "Version"; ValueData: "1.2"; Flags: deletevalue
+Root: HKLM; Subkey: "SOFTWARE\WinIPBroadcast"; ValueType: string; ValueName: "Version"; ValueData: "1.3"; Flags: deletevalue
 
 [Run]
 Filename: "{app}\WinIPBroadcast.exe"; Parameters: "install"; StatusMsg: "Installing service..."; Flags: runhidden

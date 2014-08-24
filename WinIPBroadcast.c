@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// WinIPBroadcast 1.2 by Etienne Dechamps <etienne@edechamps.fr>
+// WinIPBroadcast 1.3 by Etienne Dechamps <etienne@edechamps.fr>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -430,7 +430,7 @@ void serviceRemove(void)
 void usage(void)
 {
 	fwprintf(stderr, TEXT("usage: WinIPBroadcast < install | remove | run >\n"));
-	fwprintf(stderr, TEXT("WinIPBroadcast 1.2 by  Etienne Dechamps <etienne@edechamps.fr>\n"));
+	fwprintf(stderr, TEXT("WinIPBroadcast 1.3 by  Etienne Dechamps <etienne@edechamps.fr>\n"));
 	fwprintf(stderr, TEXT("https://github.com/dechamps/WinIPBroadcast\n"));
 	quit();
 }

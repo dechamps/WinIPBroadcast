@@ -395,6 +395,8 @@ void serviceInstall(void)
 	description.lpDescription = SERVICE_DESC;
 	
 	ChangeServiceConfig2(service, SERVICE_CONFIG_DESCRIPTION, &description);
+	SERVICE_REQUIRED_PRIVILEGES_INFO required_privileges = { TEXT("SeChangeNotifyPrivilege\0") };
+	ChangeServiceConfig2(service, SERVICE_CONFIG_REQUIRED_PRIVILEGES_INFO, &required_privileges);
 		
 	CloseServiceHandle(service);
 	CloseServiceHandle(manager);

@@ -20,6 +20,7 @@ LicenseFile=LICENSE.txt
 
 [Files]
 Source:"Release\WinIPBroadcast.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: StopService
+Source:"Release\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source:"WinIPBroadcast.c"; DestDir:"{app}\src"; Flags: ignoreversion
 Source:"WinIPBroadcast.sln"; DestDir:"{app}\src"; Flags: ignoreversion
 Source:"WinIPBroadcast.vcxproj"; DestDir:"{app}\src"; Flags: ignoreversion

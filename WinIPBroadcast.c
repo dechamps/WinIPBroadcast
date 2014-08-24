@@ -385,7 +385,7 @@ void serviceInstall(void)
 	if (!manager)
 		systemError(TEXT("OpenSCManager"), TRUE);
 		
-	service = CreateService(manager, SERVICE_NAME, TEXT("WinIPBroadcast"), SERVICE_CHANGE_CONFIG, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, path, NULL, NULL, NULL, NULL, NULL);
+	service = CreateService(manager, SERVICE_NAME, TEXT("WinIPBroadcast"), SERVICE_CHANGE_CONFIG, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, path, NULL, NULL, NULL, TEXT("NT AUTHORITY\\LocalService"), NULL);
 	if (!service)
 	{
 		CloseServiceHandle(manager);

@@ -397,6 +397,8 @@ void serviceInstall(void)
 	ChangeServiceConfig2(service, SERVICE_CONFIG_DESCRIPTION, &description);
 	SERVICE_REQUIRED_PRIVILEGES_INFO required_privileges = { TEXT("SeChangeNotifyPrivilege\0") };
 	ChangeServiceConfig2(service, SERVICE_CONFIG_REQUIRED_PRIVILEGES_INFO, &required_privileges);
+	SERVICE_SID_INFO sid = { SERVICE_SID_TYPE_UNRESTRICTED };
+	ChangeServiceConfig2(service, SERVICE_CONFIG_SERVICE_SID_INFO, &sid);
 		
 	CloseServiceHandle(service);
 	CloseServiceHandle(manager);

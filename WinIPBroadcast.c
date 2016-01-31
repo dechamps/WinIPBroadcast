@@ -219,7 +219,7 @@ void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
 	struct sockaddr_in srcAddr, dstAddr;
 
 	socket = WSASocket(AF_INET, SOCK_RAW, IPPROTO_UDP, NULL, 0, 0);
-	if (listenSocket == INVALID_SOCKET)
+	if (socket == INVALID_SOCKET)
 	{
 		socketError(TEXT("WSASocket"), FALSE);
 		closesocket(socket);

@@ -31,6 +31,17 @@ Caveats & limitations
 
 WinIPBroadcast cannot "see" packets where the source and destination ports are identical. So, for example, if the application is sending packets to 255.255.255.255:42 from 1.2.3.4:42, WinIPBroadcast won't be able to relay them. This appears to be an inherent limitation of the "loopback address hack" described above. For this reason it is unlikely to ever be fixed. (One example of an application that falls into this category is Command & Conquer 3, which sends packets from port 8086 to port 8086.)
 
+Alternatives
+------------
+
+In theory, it should be possible to choose which network interface will be used by default by altering the metric of the global broadcast route. In pratice however, that approach seems to be very hit and miss, and some applications will completely ignore such changes.
+
+In some versions of Windows, it is possible to choose which network interface will be used by default by changing the adapter order in the "Advanced Settings" accessible from a menu in the "Network Connections" folder. Unfortunately, that functionality seems to have been removed in Windows 10.
+
+[ForceBindIP][ForceBindIP] can be used to force specific applications to bind to a specific network interface, thereby forcing them to send broadcast packets through that interface.
+
+[ForceBindIP]: https://r1ch.net/projects/forcebindip
+
 Basic usage
 -----------
 

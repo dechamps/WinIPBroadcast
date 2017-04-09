@@ -98,26 +98,6 @@ void initListenSocket(void)
 		socketError(TEXT("bind"), TRUE);
 }
 
-ULONG broadcastRouteAddress(SOCKET socket)
-{
-	sockaddr_gen ourAddress;
-	sockaddr_gen routeAddress;
-	DWORD len;
-	
-	ourAddress.Address.sa_family = AF_INET;
-	ourAddress.AddressIn.sin_addr.s_addr = broadcastAddress;
-
-	if (WSAIoctl(socket, SIO_ROUTING_INTERFACE_QUERY, &ourAddress, sizeof(ourAddress), &routeAddress, sizeof(routeAddress), &len, NULL, NULL) == SOCKET_ERROR)
-	{
-		if (WSAGetLastError() == WSAENETUNREACH || WSAGetLastError() == WSAEHOSTUNREACH || WSAGetLastError() == WSAENETDOWN)
-			return 0;
-	
-		socketError(TEXT("WSAIoctl(SIO_ROUTING_INTERFACE_QUERY)"), TRUE);
-	}
-		
-	return routeAddress.AddressIn.sin_addr.s_addr;
-}
-
 DWORD getBroadcastPacket(char *buffer, size_t size, ULONG *srcAddress)
 {
 	DWORD len;
@@ -129,21 +109,20 @@ DWORD getBroadcastPacket(char *buffer, size_t size, ULONG *srcAddress)
 	
 	flags = 0;
 	
-	do
+	while (TRUE)
 	{
 		if (WSARecv(listenSocket, &wsaBuffer, 1, &len, &flags, NULL, NULL) != 0)
 			socketError(TEXT("WSARecvMsg"), TRUE);
 		
 		if (len < IP_HEADER_SIZE + UDP_HEADER_SIZE)
 			continue;
-			
+
+		if (*((ULONG *)&buffer[IP_DSTADDR_POS]) != broadcastAddress)
+			continue;
+
 		*srcAddress = *((ULONG *) &buffer[IP_SRCADDR_POS]);
+		break;
 	}
-	while (
-		*((ULONG *) &buffer[IP_DSTADDR_POS]) != broadcastAddress
-		||
-		broadcastRouteAddress(listenSocket) != *srcAddress
-	);
 	
 	return len;
 }
@@ -248,6 +227,22 @@ void sendBroadcast(ULONG srcAddress, char *payload, uint16_t payloadSize)
 	if (setsockopt(socket, SOL_SOCKET, SO_BROADCAST, (char *)&broadcastOpt, sizeof(broadcastOpt)) == SOCKET_ERROR)
 	{
 		socketError(TEXT("setsockopt(SO_BROADCAST)"), FALSE);
+		closesocket(socket);
+		return;
+	}
+
+	// Any packet we send here will also appear in the input. This can result in an infinite relay loop.
+	// To avoid this, we explicitly set the minimum possible TTL. Incoming packets with this TTL will not be relayed.
+	//
+	// TODO: this is arguably not the best way to solve this problem, because it could also result in packets
+	// getting dropped along the route. Theoretically it should make no difference because broadcast packets can't be
+	// routed anyway (TTL or not), but one can imagine special setups where that might matter. There is also the
+	// problem that if the sending process has the same idea and also sets the TTL to 1, its packets won't be relayed.
+	// A better way would be to implement some kind of content-based deduplication, but that's way more complex.
+	DWORD ttl = 1;
+	if (setsockopt(socket, IPPROTO_IP, IP_TTL, (char*)&ttl, sizeof(ttl)) == SOCKET_ERROR)
+	{
+		socketError(TEXT("setsockopt(IP_TTL)"), FALSE);
 		closesocket(socket);
 		return;
 	}

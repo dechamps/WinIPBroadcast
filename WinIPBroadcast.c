@@ -32,6 +32,7 @@
 #define IP_HEADER_SIZE 20
 #define IP_SRCADDR_POS 12
 #define IP_DSTADDR_POS 16
+#define IP_TTL_POS 8
 
 #define UDP_HEADER_SIZE 8
 #define UDP_CHECKSUM_POS 6
@@ -318,6 +319,11 @@ void loop()
 	while (TRUE)
 	{
 		len = getBroadcastPacket(buffer, sizeof(buffer), &srcAddress);
+
+		// If TTL is one, drop the packet to avoid relay loops.
+		if (*((uint8_t*)&buffer[IP_TTL_POS]) <= 1)
+			continue;
+
 		relayBroadcast(buffer + IP_HEADER_SIZE, (uint16_t)(len) - IP_HEADER_SIZE, srcAddress);
 	}
 }

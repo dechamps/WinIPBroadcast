@@ -18,6 +18,7 @@
 // WinIPBroadcast 1.3 by Etienne Dechamps <etienne@edechamps.fr>
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <Winsock2.h>
 #include <Mswsock.h>
@@ -170,10 +171,10 @@ void getForwardTable()
 	}
 }
 
-void computeUdpChecksum(char *payload, size_t payloadSize, DWORD srcAddress, DWORD dstAddress)
+void computeUdpChecksum(char *payload, uint16_t payloadSize, DWORD srcAddress, DWORD dstAddress)
 {
 	WORD *buf = (WORD *)payload;
-	size_t length = payloadSize;
+	uint16_t length = payloadSize;
 	WORD *src = (WORD *)&srcAddress, *dst = (WORD *)&dstAddress;
 	DWORD checksum;
 	
@@ -206,7 +207,7 @@ void computeUdpChecksum(char *payload, size_t payloadSize, DWORD srcAddress, DWO
 	*(WORD *)&payload[UDP_CHECKSUM_POS] = (WORD)(~checksum);
 }
 
-void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
+void sendBroadcast(ULONG srcAddress, char *payload, uint16_t payloadSize)
 {
 	SOCKET socket;
 	WSABUF wsaBuffer;
@@ -266,7 +267,7 @@ void sendBroadcast(ULONG srcAddress, char *payload, DWORD payloadSize)
 	closesocket(socket);
 }
 
-void relayBroadcast(char *payload, DWORD payloadSize, ULONG srcAddress)
+void relayBroadcast(char *payload, uint16_t payloadSize, ULONG srcAddress)
 {
 	DWORD i;
 	PMIB_IPFORWARDROW row;
@@ -317,7 +318,7 @@ void loop()
 	while (TRUE)
 	{
 		len = getBroadcastPacket(buffer, sizeof(buffer), &srcAddress);
-		relayBroadcast(buffer + IP_HEADER_SIZE, len - IP_HEADER_SIZE, srcAddress);
+		relayBroadcast(buffer + IP_HEADER_SIZE, (uint16_t)(len) - IP_HEADER_SIZE, srcAddress);
 	}
 }
 

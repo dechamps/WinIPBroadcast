@@ -26,10 +26,7 @@
 #include <windows.h>
 
 #define SERVICE_NAME TEXT("WinIPBroadcast")
-#define SERVICE_DESC ( \
-	TEXT("Sends global IP broadcast packets to all network interfaces instead of just the preferred route.\n") \
-	TEXT("If this service is disabled, applications using global IP broadcast (e.g. server browsers) might not function properly.\n") \
-)
+#define SERVICE_DESC (TEXT("Sends global IP broadcast packets to all network interfaces instead of just the preferred route. If this service is disabled, applications using global IP broadcast (e.g. server browsers) might not function properly."))
 
 #define IP_HEADER_SIZE 20
 #define IP_SRCADDR_POS 12

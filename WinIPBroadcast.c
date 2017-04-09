@@ -98,6 +98,51 @@ void initListenSocket(void)
 		socketError(TEXT("bind"), TRUE);
 }
 
+void getForwardTable()
+{
+	int result;
+
+retry:
+
+	result = GetIpForwardTable(forwardTable, &forwardTableSize, FALSE);
+
+	switch (result)
+	{
+	case NO_ERROR:
+		break;
+
+	case ERROR_INSUFFICIENT_BUFFER:
+		free(forwardTable);
+		forwardTable = malloc(forwardTableSize);
+		goto retry;
+
+	default:
+		fwprintf(stderr, TEXT("error: GetIpForwardTable failed with error code %d: %s"), result, errorString(result));
+		quit();
+	}
+}
+
+BOOL findLocalAddressInBroadcastRoutes(const ULONG *srcAddress) {
+	for (DWORD i = 0; i < forwardTable->dwNumEntries; i++)
+	{
+		PMIB_IPFORWARDROW row = &forwardTable->table[i];
+
+		if (row->dwForwardDest != broadcastAddress)
+			continue;
+
+		if (row->dwForwardMask != ULONG_MAX)
+			continue;
+
+		if (row->dwForwardType != MIB_IPROUTE_TYPE_DIRECT)
+			continue;
+
+		if (row->dwForwardNextHop == *srcAddress)
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
 DWORD getBroadcastPacket(char *buffer, size_t size, ULONG *srcAddress)
 {
 	DWORD len;
@@ -108,6 +153,8 @@ DWORD getBroadcastPacket(char *buffer, size_t size, ULONG *srcAddress)
 	wsaBuffer.len = size;
 	
 	flags = 0;
+
+	getForwardTable();
 	
 	while (TRUE)
 	{
@@ -121,34 +168,15 @@ DWORD getBroadcastPacket(char *buffer, size_t size, ULONG *srcAddress)
 			continue;
 
 		*srcAddress = *((ULONG *) &buffer[IP_SRCADDR_POS]);
+
+		// We will also receive broadcast packets coming from the outside. Filter those out.
+		if (!findLocalAddressInBroadcastRoutes(srcAddress))
+			continue;
+
 		break;
 	}
-	
+
 	return len;
-}
-
-void getForwardTable()
-{
-	int result;
-	
-	retry:
-	
-	result = GetIpForwardTable(forwardTable, &forwardTableSize, FALSE);
-
-	switch (result)
-	{
-		case NO_ERROR:
-			break;
-			
-		case ERROR_INSUFFICIENT_BUFFER:
-			free(forwardTable);
-			forwardTable = malloc(forwardTableSize);
-			goto retry;
-			
-		default:
-			fwprintf(stderr, TEXT("error: GetIpForwardTable failed with error code %d: %s"), result, errorString(result));
-			quit();
-	}
 }
 
 void computeUdpChecksum(char *payload, uint16_t payloadSize, DWORD srcAddress, DWORD dstAddress)
@@ -267,8 +295,6 @@ void relayBroadcast(char *payload, uint16_t payloadSize, ULONG srcAddress)
 {
 	DWORD i;
 	PMIB_IPFORWARDROW row;
-
-	getForwardTable();
 	
 	for (i = 0; i < forwardTable->dwNumEntries; i++)
 	{

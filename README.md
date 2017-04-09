@@ -1,4 +1,4 @@
-WinIPBroadcast 1.4
+WinIPBroadcast 1.5
 ==================
 
 Author: Etienne Dechamps (a.k.a e-t172) <etienne@edechamps.fr>

@@ -1,6 +1,8 @@
 WinIPBroadcast changelog
 ========================
 
+- 1.5 (09/04/2017)
+  - Fix a regression introduced in 1.4 where WinIPBroadcast would not only relay packets from the local machine, but broadcast packets arriving on network interfaces as well.
 - 1.4 (09/04/2017)
   - Don't relay packets with a TTL of 1 or less.
   - Relayed packets will now be sent with a TTL of 1.

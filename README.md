@@ -26,6 +26,11 @@ Thus, if an application send a broadcast packet, Windows will send it to the pre
 
 WinIPBroadcast has been tested on Windows 7 and Windows 10. Theoretically, it should work as well on Windows 2000/XP/2003/Vista/2008/8.
 
+Caveats & limitations
+---------------------
+
+WinIPBroadcast cannot "see" packets where the source and destination ports are identical. So, for example, if the application is sending packets to 255.255.255.255:42 from 1.2.3.4:42, WinIPBroadcast won't be able to relay them. This appears to be an inherent limitation of the "loopback address hack" described above. For this reason it is unlikely to ever be fixed. (One example of an application that falls into this category is Command & Conquer 3, which sends packets from port 8086 to port 8086.)
+
 Basic usage
 -----------
 

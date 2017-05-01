@@ -1,6 +1,8 @@
 WinIPBroadcast changelog
 ========================
 
+- 1.6 (01/05/2017)
+  - The MSVC runtime DLL is now linked in statically. This should prevent issues related to missing DLLs on some systems.
 - 1.5 (09/04/2017)
   - Fix a regression introduced in 1.4 where WinIPBroadcast would not only relay packets from the local machine, but broadcast packets arriving on network interfaces as well.
 - 1.4 (09/04/2017)

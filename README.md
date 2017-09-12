@@ -24,7 +24,7 @@ WinIPBroadcast is an extremely small program (15 KB executable) which has been s
 
 Thus, if an application send a broadcast packet, Windows will send it to the preferred interface, then WinIPBroadcast will receive it and resend it to all other interfaces. In the end the packet is sent on all network interfaces: problem solved.
 
-WinIPBroadcast has been tested on Windows 7 and Windows 10. Theoretically, it should work as well on Windows 2000/XP/2003/Vista/2008/8.
+WinIPBroadcast has been successfully tested on Windows 7 and Windows 10. Older Windows versions are unsupported.
 
 Caveats & limitations
 ---------------------
